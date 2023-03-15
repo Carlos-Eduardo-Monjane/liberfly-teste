@@ -10,10 +10,22 @@ use App\Traits\ApiResponser;
 class BookController extends Controller
 {
     use ApiResponser;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+    
+        /**
+     * @OA\Get(
+     *    path="/books",
+     *    operationId="index",
+     *    tags={"Books"},
+     *    summary="Get list of Books",
+     *    description="Get list of Books",
+     *     @OA\Response(
+     *          response=200, description="Success",
+     *          @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example="200"),
+     *             @OA\Property(property="data",type="object")
+     *          )
+     *       )
+     *  )
      */
     public function index()
     {
@@ -26,11 +38,32 @@ class BookController extends Controller
  
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+/**
+     * @OA\Post(
+     *      path="/books",
+     *      operationId="store",
+     *      tags={"Books"},
+     *      summary="Store Book in DB",
+     *      description="Store Book in DB",
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"name", "author", "isbn"},
+     *            @OA\Property(property="name", type="string", format="string", example="Luzes da Noite"),
+     *            @OA\Property(property="author", type="string", format="string", example="Camoes"),
+     *            @OA\Property(property="publisher", type="string", format="string", example="Editora Plus"),
+     *            @OA\Property(property="isbn", type="string", format="string", example="234617I53"),
+     * 
+     *         ),
+     *      ),
+     *     @OA\Response(
+     *          response=200, description="Success",
+     *          @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=""),
+     *             @OA\Property(property="data",type="object")
+     *          )
+     *       )
+     *  )
      */
     public function store(Request $request)
     {
@@ -60,11 +93,26 @@ class BookController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+      /**
+     * @OA\Get(
+     *    path="/books/{id}",
+     *    operationId="show",
+     *    tags={"Books"},
+     *    summary="Get Book Detail",
+     *    description="Get Book Detail",
+     *    @OA\Parameter(name="id", in="path", description="Id of Book", required=true,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Success",
+     *          @OA\JsonContent(
+     *          @OA\Property(property="status_code", type="integer", example="200"),
+     *          @OA\Property(property="data",type="object")
+     *           ),
+     *        )
+     *       )
+     *  )
      */
     public function show($id)
     {
@@ -76,11 +124,34 @@ class BookController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *     path="/books/{id}",
+     *     operationId="update",
+     *     tags={"Books"},
+     *     summary="Update book in DB",
+     *     description="Update Book in DB",
+     *     @OA\Parameter(name="id", in="path", description="Id of Book", required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *        required=true,
+     *        @OA\JsonContent(
+     *           required={"name", "author", "isbn"},
+     *            @OA\Property(property="name", type="string", format="string", example="Luzes da Noite"),
+     *            @OA\Property(property="author", type="string", format="string", example="Camoes"),
+     *            @OA\Property(property="publisher", type="string", format="string", example="Editora Plus"),
+     *            @OA\Property(property="isbn", type="string", format="string", example="234617I53"),
+     * 
+     *        ),
+     *     ),
+     *     @OA\Response(
+     *          response=200, description="Success",
+     *          @OA\JsonContent(
+     *             @OA\Property(property="status_code", type="integer", example="200"),
+     *             @OA\Property(property="data",type="object")
+     *          )
+     *       )
+     *  )
      */
     public function update(Request $request, $id)
     {
@@ -99,12 +170,26 @@ class BookController extends Controller
         return $this->errorResponse('Unable to update book',500);
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+  /**
+     * @OA\Delete(
+     *    path="/books/{id}",
+     *    operationId="destroy",
+     *    tags={"Books"},
+     *    summary="Delete Book",
+     *    description="Delete Book",
+     *    @OA\Parameter(name="id", in="path", description="Id of Book", required=true,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *         @OA\Property(property="status_code", type="integer", example="200"),
+     *         @OA\Property(property="data",type="object")
+     *          ),
+     *       )
+     *      )
+     *  )
      */
     public function destroy($id)
     {
